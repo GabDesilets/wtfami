@@ -15,10 +15,10 @@ class login_model extends CI_Model
      *
      * @return boolean
      */
-    public function doAuthentication($username, $password) {
+    public function do_authentication($username, $password) {
 
         $this->db->select('*');
-        $this->db->from('user');
+        $this->db->from('users');
         $this->db->where('login', $username);
         $this->db->where('password', $password);
         $this->db->limit(1);

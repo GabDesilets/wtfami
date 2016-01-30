@@ -4,6 +4,6 @@ class Edit_Mode extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('edit_mode');
+		$this->load->myView('edit_mode');
 	}
 }

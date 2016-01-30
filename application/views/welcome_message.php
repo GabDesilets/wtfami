@@ -28,6 +28,7 @@
 		</ul>
 	</div>
 </nav>
+<?php echo form_open('login/authenticate_user'); ?>
 <div class="container">
 	<div class="row" >
 		<div class="col s8">
@@ -39,13 +40,13 @@
 			<form>
 				<div class="row">
 					<div class="input-field col s12">
-						<input id="email" type="email" class="validate">
-						<label for="email">Email</label>
+						<input name="login" id="login" type="text" class="validate">
+						<label for="login">Login</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="input-field col s12">
-						<input id="password" type="password" class="validate">
+						<input name="password" id="password" type="password" class="validate">
 						<label for="password">Password</label>
 					</div>
 				</div>
@@ -56,6 +57,7 @@
 		</div>
 	</div>
 </div>
+<?php echo form_close(); ?>
 <footer class="page-footer">
 	<div class="container">
 		<div class="row">

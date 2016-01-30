@@ -4,6 +4,6 @@ class View_Mode extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('view_mode');
+		$this->load->myView('view_mode');
 	}
 }

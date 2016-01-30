@@ -54,29 +54,28 @@ class login extends CI_Controller
     /**
      * Do the user auth
      */
-    public function authenticateUser() {
-
+    public function authenticate_user() {
         if ($this->formValidation()) {
-            $username = trim($this->input->post('username'));
-            $password = do_hash(trim($this->input->post('password')));
+            $username = trim($this->input->post('login'));
+            $password = md5(trim($this->input->post('password')));
 
-            if ($this->login_model->doAuthentication($username, $password)) {
-                $user = $this->users_model->whereUsernamePassword($username, $password)->getOne();
+            if ($this->login_model->do_authentication($username, $password)) {
+                $user = $this->users_model->where_username_password($username, $password)->get_one();
+
                 $sessionData = array(
                     'full_name' => ucfirst($user->fname).' '.ucfirst($user->lname),
-                    'uid'             => $user->id,
-                    'is_logged_in'      => true
+                    'uid' => $user->id,
+                    'is_logged_in' => true
                 );
 
                 $this->session->set_userdata($sessionData);
 
-                redirect('home');
+                redirect('edit_mode');
 
             }
             else {
                 $this->showForm('Nom d\'utilisateur ou mot de passe incorrect');
             }
-
         }
         else {
             $this->showForm();
@@ -90,7 +89,7 @@ class login extends CI_Controller
     }
 
     private  function formValidation() {
-        $this->form_validation->set_rules('username', 'Nom d\'utilisateur', "xss_clean|required");
+        $this->form_validation->set_rules('login', 'Nom d\'utilisateur', "xss_clean|required");
         $this->form_validation->set_rules('password', 'Mot de passe', 'xss_clean|required');
 
         return $this->form_validation->run();

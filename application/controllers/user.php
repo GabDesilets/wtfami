@@ -13,11 +13,6 @@ class user extends  CI_Controller
         $this->load->model('users_model');
     }
 
-    public function show_create()
-    {
-        $this->load->view('user_create.html');
-    }
-
     public function add_user()
     {
         $data = array(

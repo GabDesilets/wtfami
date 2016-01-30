@@ -7,3 +7,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   email varchar(255) not null,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+insert INTO users (fname, lname, login, password, email)
+values('gabriel', 'desilets', 'gab', 'md5(gd)', 'gabdesilets@gmail.com');
