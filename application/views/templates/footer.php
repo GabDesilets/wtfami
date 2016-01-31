@@ -20,8 +20,7 @@
     </div>
     <div class="footer-copyright">
         <div class="container">
-            © 2014 Copyright Text
-            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            &copy; 2016 WTFAMI inc.
         </div>
     </div>
 </footer>
