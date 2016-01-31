@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 insert INTO users (fname, lname, login, password, email)
-values('gabriel', 'desilets', 'gab', 'md5(gd)', 'gabdesilets@gmail.com');
+values('gabriel', 'desilets', 'gab', md5('gd'), 'gabdesilets@gmail.com');
 
 ######################################################################
 

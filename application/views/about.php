@@ -9,7 +9,7 @@
 			</div>
 		</div>
 		<div class="col s4" style="padding:30px 0 0 0">
-			<img src="<?php echo base_url();?>application/views/images/ad.jpg" width="75%" height="75%" />
+			<img src="<?php echo base_url('application/img/ad.jpg');?>" width="75%" height="75%" />
 		</div>
 	</div>
 </div>

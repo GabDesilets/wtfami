@@ -8,6 +8,15 @@ class user_routes_model extends CI_Model
         parent::__construct();
     }
 
+    public function get_one_route()
+    {
+        $this->db
+            ->select('rm.id, rm.route_id, rm.marker_lat, rm.marker_long')
+            ->select('r.name, r.description')
+            ->limit(1);
+        return $this->db->get()->result();
+    }
+
     public function get_routes()
     {
         $this->db
@@ -40,5 +49,11 @@ class user_routes_model extends CI_Model
             $this->db->where('routes.id', $route_id);
             $this->db->delete('routes');
         }
+    }
+
+    public function where_route($route_id)
+    {
+        $this->db->where('users_routes.route_id', $route_id);
+        return $this;
     }
 }

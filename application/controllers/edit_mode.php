@@ -21,7 +21,17 @@ class Edit_Mode extends CI_Controller {
     public function edit()
     {
         $route_id = $this->input->post('id');
-        // TODO HAVE JS STUFF FOR EDIT
+        $user_route = $this->user_routes_model
+            ->where_user($this->session->userdata('uid'))
+            ->where_route($route_id)
+            ->get_one_route();
+
+        $this->load->myView('edit_mode', ['route' => $user_route]);
+    }
+
+    public function add()
+    {
+        $this->load->myView('edit_mode');
     }
 
     public function delete()

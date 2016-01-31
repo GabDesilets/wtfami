@@ -36,18 +36,15 @@ class login extends CI_Controller
      * apres que les validations de bases aient passées
      */
     public function showForm($error = '') {
-        //$this->output->enable_profiler(TRUE);
-
         $data['title']    = 'Authentification'; // Capitalize the first letter
         $data['menu']     = 'Authentification';
-        $data['isLoggin'] = true;
 
         $data['error'] = $error
             ? '<div class="alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$error.'</div>'
             : '';
 
-        $this->load->view('login/login_view', $data);
+        $this->load->view('welcome_message', $data);
     }
 
 
