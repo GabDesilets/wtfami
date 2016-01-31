@@ -20,13 +20,16 @@
 <script src="<?php echo base_url();?>application/views/scripts/map_manager.js" ></script>
 
 <input type="hidden" id="uglyurlpatch" value="<?php echo site_url('edit_mode/save');?>">
-<input type="hidden" id="route_id" value="<?php echo $route_id?>">
+<input type="hidden" id="route_id" value="<?php echo $route ? $route->id : '' ?>">
 <div class="row">
+    <h4><?php echo $route ? "Route: {$route->name}" : 'Nouvelle route !'?></h4>
+    <div class="card-content black-text">
+        <span class="card-title">Description: </span>
+        <p><?php echo $route ? $route->description : ''?></p>
+    </div>
+
     <div id="map-wrapper" class="col s12" style="position:relative;">
 		<div id="floating-panel">
-		   <!--<input onclick="clearMarkers();" type=button value="Hide Markers">
-		   <input onclick="showMarkers();" type=button value="Show All Markers">
-		   <input onclick="deleteMarkers();" type=button value="Delete Markers">-->
 		   <div id="titleDiv"><h5 >Clique sur la carte pour commencer!</h5></div>
 		</div>
         <div id="map-canvas" style="width: 100%; height: 600px; margin: 20px 0 0 0; padding: 15px;"></div>

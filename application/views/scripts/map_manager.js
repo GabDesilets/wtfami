@@ -61,8 +61,8 @@ function initMap() {
 }
 
 function updateRouteInfo() {
-  routeName = $("#route-name")[0].value;
-  routeDescription = $("#route-desc")[0].value;
+  routeName = $("#route-name").val();
+  routeDescription = $("#route-desc").val();
   initMap();
 }
 
@@ -108,7 +108,7 @@ function addMarker() {
     markerName: markerName
   });
 
-  pointsOfInterest.push({'marker': marker, 'name': markerName, 'desc': markerDescription});
+  pointsOfInterest.push({'marker': marroute-nameker, 'name': markerName, 'desc': markerDescription});
 
   marker.addListener('click', function() {
     var nbPointsOfInterest = pointsOfInterest.length;
@@ -151,7 +151,7 @@ function completeRoad() {
 }
 
 function completeWTFAMI() {
-  console.log(road[0], pointsOfInterest);
+  console.log(routeName, routeDescription);
   var road_markers = [];
   var pois = [];
   for(var i = 0; i < road.length; i++) {
@@ -176,7 +176,9 @@ function completeWTFAMI() {
   var routes = {
     'routes_markers': road_markers,
     'route_markers_descriptions': pois,
-    'route_id': $('#route_id').val()
+    'route_id': $('#route_id').val(),
+    'route_name': routeName,
+    'route_description': routeDescription
   };
 
   $.ajax({
@@ -185,7 +187,7 @@ function completeWTFAMI() {
     data:    routes,
     dataType:'JSON',
     success: function(data) {
-        console.log("succeess");
+        location.reload();
     }
   });
 }
