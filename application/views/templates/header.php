@@ -33,9 +33,6 @@
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
 
-<script async defer
-       src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBu9AE8MvT526Yv37X05wdlT6qAdCXrnUQ&signed_in=true&callback=initMap"></script>
-
 <nav>
     <div class="nav-wrapper">
         <a href="#" class="brand-logo" style="padding-left: 20px;">WTFAMI</a>

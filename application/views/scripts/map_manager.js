@@ -2,9 +2,18 @@
 var lastClickPosition;
 var map;
 var poly;
+var initialCount = 0;
 var road = [];
 var pointsOfInterest = [];
 var roadIsComplete = false;
+
+function initView() {
+  if (routeName != "") {
+    initMap();
+  } else {
+    $('#routeInfoModal').openModal();
+  }  
+}
 
 function initMap() {
   var mapOptions = {
@@ -36,9 +45,25 @@ function initMap() {
   } else {
     handleNoGeolocation(false);
   }
+  if (loadedRoute.length > 0) {
+    initialCount = loadedRoute.length;
+    nbLoadedRoutes = loadedRoute.length;
+    for (var i = 0; i < nbLoadedRoutes; i++) {
+      road.push(new google.maps.LatLng(parseFloat(loadedRoute[i]['marker_lat']), parseFloat(loadedRoute[i]['marker_long'])));
+    }
+    compileRoad();
+    
+        $('#titleDiv h5')[0].innerHTML = "Rebienvenue! Tu peux ajouter des points &agrave; ta route, laisse moi savoir quand tu auras fini!";
+        $('#titleDiv')[0].innerHTML =
+          $('#titleDiv h5').prop('outerHTML') +
+          "<br/><br/><a id='roadDoneButton' class='waves-effect waves-light btn' onclick='completeRoad()'>Ma route est prête!</a>";
+  }  
+}
 
-  if (road.length > 0) resetRoad();
-  if (pointsOfInterest.length > 0) resetPointsOfInterest();
+function updateRouteInfo() {
+  routeName = $("#route-name")[0].value;
+  routeDescription = $("#route-desc")[0].value;
+  initMap();
 }
 
 // Handles click events on a map, and adds a new point to the Polyline.
@@ -55,7 +80,7 @@ function onMapClick(event) {
 
     switch (road.length) {
       case 1: $('#titleDiv h5')[0].innerHTML = "Choisi un autre point pour tracer la route!"; break;
-      case 2:
+      default:
         $('#titleDiv h5')[0].innerHTML = "Good job! Ajoute autant de points que tu le veux et dit moi quand tu auras terminé!";
         $('#titleDiv')[0].innerHTML =
           $('#titleDiv h5').prop('outerHTML') +
@@ -92,12 +117,30 @@ function addMarker() {
         break;
       }
     }
-    var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + (i + 1) + '</h6>Name: ' + marker.markerName + '<br>Location : ' + marker.position + '</div>';
+    var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + (i + 1) + '</h6><a onclick="deleteMarker(' + marker.position.lat() + ', ' + marker.position.lng() + ')"><i class="small material-icons" style="position: absolute;top: 1px;right: 15px;font-size: 13px;">delete</i></a>Name: ' + marker.markerName + '<br>Location : (' + marker.position.lat().toFixed(4) + ', ' + marker.position.lng().toFixed(4) + ')</div>';
     var infowindow = new google.maps.InfoWindow({
        content: contentString
     });
     infowindow.open(map, marker);
   });
+}
+
+function deleteMarker(lat, lng) {
+  //debugger;
+  var nbPointsOfInterest = pointsOfInterest.length;
+  for (var i = 0; i < nbPointsOfInterest; i++) {
+    if (pointsOfInterest[i].marker.position.lat() == lat && pointsOfInterest[i].marker.position.lng() == lng) {
+      pointsOfInterest[i].marker.setMap(null);
+      pointsOfInterest.splice(i, 1);
+      break;
+    }
+  }
+  //compilePointsOfInterest();
+}
+
+function deleteRoadPoint(idx) {
+  road.splice(idx,1);
+  poly.setPath(road);
 }
 
 function completeRoad() {
@@ -111,7 +154,7 @@ function completeWTFAMI() {
   alert('Nothing to do here!');
 }
 
-function loadRoad() {
+function compileRoad() {
   var path = poly.getPath();
   nbRoadPoints = road.length;
   for (var i = 0; i < nbRoadPoints; i++) {
@@ -120,7 +163,8 @@ function loadRoad() {
   }
 }
 
-function loadPointsOfInterest() {
+function compilePointsOfInterest() {
+  setMapOnAll(null);
   nbPointsOfInterest = pointsOfInterest.length;
   for (var i = 0; i < nbPointsOfInterest; i++) {
     // Add a new marker at the new plotted point on the polyline.
@@ -141,7 +185,7 @@ function loadPointsOfInterest() {
           break;
         }
       }
-      var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + (i + 1) + '</h6>Name: ' + marker.markerName + '<br>Location : ' + marker.position + '</div>';
+      var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + (i + 1) + '</h6><a onclick="deleteMarker(' + marker.position.lat() + ', ' + marker.position.lng() + ')"><i class="small material-icons" style="position: absolute;top: 1px;right: 15px;font-size: 13px;">delete</i></a>Name: ' + marker.markerName + '<br>Location : (' + marker.position.lat().toFixed(4) + ', ' + marker.position.lng().toFixed(4) + ')</div>';
       var infowindow = new google.maps.InfoWindow({
          content: contentString
       });
