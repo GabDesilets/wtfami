@@ -80,7 +80,6 @@ class user_routes_model extends CI_Model
 
     public function update_routes($routes, $route_id)
     {
-
             $this->db->where('routes_markers.route_id', $route_id);
             $this->db->delete('routes_markers');
 

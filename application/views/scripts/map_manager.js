@@ -154,7 +154,6 @@ function completeRoad() {
 }
 
 function completeWTFAMI() {
-  console.log(routeName, routeDescription);
   var road_markers = [];
   var pois = [];
   for(var i = 0; i < road.length; i++) {

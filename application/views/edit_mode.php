@@ -35,6 +35,8 @@
 		   <div id="titleDiv"><h5 >Clique sur la carte pour commencer!</h5></div>
 		</div>
         <div id="map-canvas" style="width: 100%; height: 600px; margin: 20px 0 0 0; padding: 15px;"></div>
+        <div id="directions"></div>
+        <div id="Gresponse"></div>
     </div>
 </div>
 <div id="pointOfInterestModal" class="modal">
@@ -81,3 +83,87 @@
 		<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat" onclick="updateRouteInfo();">OK</a>
 	</div>
 </div>
+<script>
+    var lineSymbol = {
+        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+        scale: 4,
+        strokeColor: '#ee6e73'
+    };
+    var road_markers_SIM = [];
+    for(var i = 0; i < road.length; i++) {
+        road_markers_SIM.push(
+            {
+                lat: road[i].lat(),
+                lng: road[i].lng()
+            }
+        );
+        find_closest_marker(road[i].lat(), road[i].lng());
+    };
+    // Create the polyline and add the symbol to it via the 'icons' property.
+    var line = new google.maps.Polyline({
+        path: road_markers_SIM,
+        icons: [{
+            icon: lineSymbol,
+            offset: '100%'
+        }],
+        map: map
+    });
+
+    animateCircle(line);
+
+    // Use the DOM setInterval() function to change the offset of the symbol
+    // at fixed intervals.
+    function animateCircle(line) {
+        var count = 0;
+
+        var totalLatLong = road_markers_SIM.length;
+        var tot = 0;
+        window.setInterval(function() {
+            count = (count + 1) % 200;
+            tot++;
+            var icons = line.get('icons');
+            icons[0].offset = (count / 2) + '%';
+            line.set('icons', icons);
+        }, 25);
+    }
+
+    function rad(x) {return x*Math.PI/180;}
+
+    function find_closest_marker(la, ln) {
+        var lat = la;
+        var lng = ln;
+        var R = 0.00005; // radius of earth in km
+        var distances = [];
+        var closest = -1;
+
+        for(var i = 0; i < pointsOfInterest.length; i++) {
+            var mlat = pointsOfInterest[i].marker.position.lat();
+            var mlng = pointsOfInterest[i].marker.position.lng();
+            var dLat  = rad(mlat - lat);
+            var dLong = rad(mlng - lng);
+            var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong/2) * Math.sin(dLong/2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            var d = R * c;
+            distances[i] = d;
+            if ( closest == -1 || d < distances[closest] ) {
+                closest = i;
+            }
+        }
+
+        var contentString ='' +
+            '<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + (i + 1) +
+            '</h6><a onclick="deleteMarker(' + pointsOfInterest[closest].marker.position.lat() + ', '
+            + pointsOfInterest[closest].marker.position.lng() + ')">' +
+            '<i class="small material-icons" style="position: absolute;top: 1px;right: 15px;font-size: 13px;">delete</i>' +
+            '</a>Name: ' + pointsOfInterest[closest].markerName +
+            '<br>Location : (' + pointsOfInterest[closest].marker.position.lat().toFixed(4) + ', ' + pointsOfInterest[closest].marker.position.lng().toFixed(4) + ')' +
+            '</div>';
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        infowindow.open(map, pointsOfInterest[closest].marker);
+
+
+    }
+</script>
