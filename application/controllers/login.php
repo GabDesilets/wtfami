@@ -67,7 +67,7 @@ class login extends CI_Controller
 
                 $this->session->set_userdata($sessionData);
 
-                redirect('edit_mode');
+                redirect('route');
 
             }
             else {

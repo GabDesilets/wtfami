@@ -35,10 +35,10 @@
 
 <nav>
     <div class="nav-wrapper">
-        <a href="#" class="brand-logo" style="padding-left: 20px;">WTFAMI</a>
+        <a href="<?php echo base_url();?>" class="brand-logo" style="padding-left: 20px;">WTFAMI</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="#">Accueil</a></li>
-            <li><a href="about">&Agrave; propos</a></li>
+            <li><a href="<?php echo base_url();?>">Accueil</a></li>
+            <li><a href="<?php echo base_url();?>about">&Agrave; propos</a></li>
         </ul>
     </div>
 </nav>

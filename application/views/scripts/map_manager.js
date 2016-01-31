@@ -2,7 +2,6 @@
 var lastClickPosition;
 var map;
 var poly;
-var initialCount = 0;
 var road = [];
 var pointsOfInterest = [];
 var roadIsComplete = false;
@@ -46,18 +45,20 @@ function initMap() {
     handleNoGeolocation(false);
   }
   if (loadedRoute.length > 0) {
-    initialCount = loadedRoute.length;
     nbLoadedRoutes = loadedRoute.length;
     for (var i = 0; i < nbLoadedRoutes; i++) {
       road.push(new google.maps.LatLng(parseFloat(loadedRoute[i]['marker_lat']), parseFloat(loadedRoute[i]['marker_long'])));
     }
     compileRoad();
     
-        $('#titleDiv h5')[0].innerHTML = "Rebienvenue! Tu peux ajouter des points &agrave; ta route, laisse moi savoir quand tu auras fini!";
-        $('#titleDiv')[0].innerHTML =
-          $('#titleDiv h5').prop('outerHTML') +
-          "<br/><br/><a id='roadDoneButton' class='waves-effect waves-light btn' onclick='completeRoad()'>Ma route est prête!</a>";
-  }  
+    if (editMode) {
+      $('#titleDiv h5')[0].innerHTML = "Rebienvenue! Tu peux ajouter des points &agrave; ta route, laisse moi savoir quand tu auras fini!";
+      $('#titleDiv')[0].innerHTML =
+      $('#titleDiv h5').prop('outerHTML') + "<br/><br/><a id='roadDoneButton' class='waves-effect waves-light btn' onclick='completeRoad()'>Ma route est prête!</a>";
+    }
+  }
+
+  compilePointsOfInterest();
 }
 
 function updateRouteInfo() {
@@ -68,28 +69,30 @@ function updateRouteInfo() {
 
 // Handles click events on a map, and adds a new point to the Polyline.
 function onMapClick(event) {
-  currentMarker = event.latLng;
+  if (editMode) {
+    currentMarker = event.latLng;
 
-  if (!roadIsComplete) {
-    var path = poly.getPath();
+    if (!roadIsComplete) {
+      var path = poly.getPath();
 
-     // Because path is an MVCArray, we can simply append a new coordinate and it will automatically appear.
-    path.push(currentMarker);
+       // Because path is an MVCArray, we can simply append a new coordinate and it will automatically appear.
+      path.push(currentMarker);
 
-    road.push(currentMarker);
+      road.push(currentMarker);
 
-    switch (road.length) {
-      case 1: $('#titleDiv h5')[0].innerHTML = "Choisi un autre point pour tracer la route!"; break;
-      default:
-        $('#titleDiv h5')[0].innerHTML = "Good job! Ajoute autant de points que tu le veux et dit moi quand tu auras terminé!";
-        $('#titleDiv')[0].innerHTML =
-          $('#titleDiv h5').prop('outerHTML') +
-          "<br/><br/><a id='roadDoneButton' class='waves-effect waves-light btn' onclick='completeRoad()'>Ma route est prête!</a>";
-        break;
+      switch (road.length) {
+        case 1: $('#titleDiv h5')[0].innerHTML = "Choisi un autre point pour tracer la route!"; break;
+        default:
+          $('#titleDiv h5')[0].innerHTML = "Good job! Ajoute autant de points que tu le veux et dit moi quand tu auras terminé!";
+          $('#titleDiv')[0].innerHTML =
+            $('#titleDiv h5').prop('outerHTML') +
+            "<br/><br/><a id='roadDoneButton' class='waves-effect waves-light btn' onclick='completeRoad()'>Ma route est prête!</a>";
+          break;
+      }
+    } else {
+      lastClickPosition = currentMarker;
+      $('#pointOfInterestModal').openModal();
     }
-  } else {
-    lastClickPosition = currentMarker;
-    $('#pointOfInterestModal').openModal();
   }
 }
 
@@ -108,7 +111,7 @@ function addMarker() {
     markerName: markerName
   });
 
-  pointsOfInterest.push({'marker': marker, 'name': markerName, 'desc': markerDescription});
+  pointsOfInterest.push({'marker': marker, 'name': markerName, 'description': markerDescription});
 
   marker.addListener('click', function() {
     var nbPointsOfInterest = pointsOfInterest.length;
@@ -162,11 +165,13 @@ function completeWTFAMI() {
         }
     );
   }
+
+  console.log(pointsOfInterest);
   for(var i = 0; i < pointsOfInterest.length; i++) {
     pois.push(
         {
             name: pointsOfInterest[i].name,
-            description: pointsOfInterest[i].desc,
+            description: pointsOfInterest[i].description,
             lat: pointsOfInterest[i].marker.position.lat(),
             long: pointsOfInterest[i].marker.position.lng()
         }
@@ -200,34 +205,52 @@ function compileRoad() {
 }
 
 function compilePointsOfInterest() {
-  setMapOnAll(null);
+  //setMapOnAll(null);
   nbPointsOfInterest = pointsOfInterest.length;
-  for (var i = 0; i < nbPointsOfInterest; i++) {
-    // Add a new marker at the new plotted point on the polyline.
-    var marker = new google.maps.Marker({
-      position: lastClickPosition,
-      title: markerName,
-      map: map,
-      draggable: true,
-      markerName: markerName
-    });
-
-    pointsOfInterest.push({'marker': marker, 'name': markerName, 'desc': markerDescription});
-
-    marker.addListener('click', function() {
-      var nbPointsOfInterest = pointsOfInterest.length;
-      for (var i = 0; i < nbPointsOfInterest; i++) {
-        if (pointsOfInterest[i].marker.position == marker.position) {
-          break;
-        }
-      }
-      var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + (i + 1) + '</h6><a onclick="deleteMarker(' + marker.position.lat() + ', ' + marker.position.lng() + ')"><i class="small material-icons" style="position: absolute;top: 1px;right: 15px;font-size: 13px;">delete</i></a>Name: ' + marker.markerName + '<br>Location : (' + marker.position.lat().toFixed(4) + ', ' + marker.position.lng().toFixed(4) + ')</div>';
-      var infowindow = new google.maps.InfoWindow({
-         content: contentString
+  if (pointsOfInterest.length > 0) {
+    for (var i = 0; i < nbPointsOfInterest; i++) {
+      // Add a new marker at the new plotted point on the polyline.
+      var marker = new google.maps.Marker({
+        position: pointsOfInterest[i].marker,
+        title: pointsOfInterest[i].name,
+        map: map,
+        draggable: true,
+        markerName: pointsOfInterest[i].name,
+        map: map,
       });
-      infowindow.open(map, marker);
-    });
+
+      pointsOfInterest[i].marker = marker;
+    }
+  } else if (descriptionMarkers.length > 0) {
+    nbDescriptionMarkers = descriptionMarkers.length;
+    for (var i = 0; i < nbDescriptionMarkers; i++) {
+      // Add a new marker at the new plotted point on the polyline.
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(parseFloat(descriptionMarkers[i]['marker_lat']), parseFloat(descriptionMarkers[i]['marker_long'])),
+        title: descriptionMarkers[i].name,
+        map: map,
+        draggable: true,
+        markerName: descriptionMarkers[i].name,
+        map: map,
+      });
+
+      pointsOfInterest.push({'marker': marker, 'name': descriptionMarkers[i].name, 'description': descriptionMarkers[i].description});
+    }
   }
+
+  marker.addListener('click', function() {
+    var nbPointsOfInterest = pointsOfInterest.length;
+    for (var i = 0; i < nbPointsOfInterest; i++) {
+      if (pointsOfInterest[i].marker.position == marker.position) {
+        break;
+      }
+    }
+    var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + (i + 1) + '</h6><a onclick="deleteMarker(' + marker.position.lat() + ', ' + marker.position.lng() + ')"><i class="small material-icons" style="position: absolute;top: 1px;right: 15px;font-size: 13px;">delete</i></a>Name: ' + marker.markerName + '<br>Location : (' + marker.position.lat().toFixed(4) + ', ' + marker.position.lng().toFixed(4) + ')</div>';
+    var infowindow = new google.maps.InfoWindow({
+       content: contentString
+    });
+    infowindow.open(map, marker);
+  });
 }
 
 function handleNoGeolocation(errorFlag) {

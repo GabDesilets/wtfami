@@ -1,7 +1,7 @@
+<div class="container">
 <h2>
     Recherchez une route.
 </h2>
-<div class="container">
 <nav>
     <div class="nav-wrapper">
         <form method="GET" action="<?php echo site_url('route/index')?>">

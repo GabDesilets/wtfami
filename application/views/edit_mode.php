@@ -1,13 +1,15 @@
 
 <?php if(isset($usr_route)):?>
     <script>
+    	var editMode = true;
         var loadedRoute = <?php echo json_encode($usr_route) ?>;
-        var routeName = loadedRoute.name;
-        var routeDescription = loadedRoute.description;
+        var routeName = loadedRoute[0].name;
+        var routeDescription = loadedRoute[0].description;
         var descriptionMarkers = <?php  echo json_encode($desc_markers);?>;
     </script>
 <?php else: ?>
     <script>
+    	var editMode = true;
         var loadedRoute = [];
         var routeName = "";
         var routeDescription = "";
@@ -20,7 +22,8 @@
 <script src="<?php echo base_url();?>application/views/scripts/map_manager.js" ></script>
 
 <input type="hidden" id="uglyurlpatch" value="<?php echo site_url('edit_mode/save');?>">
-<input type="hidden" id="route_id" value="<?php echo $route_id?>">
+<?php if (isset($route_id)) { echo '<input type="hidden" id="route_id" value="' . $route_id . '">';} ?>
+
 <div class="row">
     <div id="map-wrapper" class="col s12" style="position:relative;">
 		<div id="floating-panel">

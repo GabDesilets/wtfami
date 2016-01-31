@@ -42,7 +42,7 @@ class Edit_Mode extends CI_Controller {
 
         $description_markers = $this->user_routes_model->get_routes_markers_description($route_id);
 
-        $this->load->myView('edit_mode', ['usr_route' => $user_route, 'desc_markers' => $description_markers]);
+        $this->load->myView('view_mode', ['usr_route' => $user_route, 'desc_markers' => $description_markers, 'route_id' => $route_id]);
     }
 
     public function save()
