@@ -29,6 +29,11 @@ class Edit_Mode extends CI_Controller {
         $this->load->myView('edit_mode', ['route' => $user_route]);
     }
 
+    public function save()
+    {
+        die(var_dump($_POST));
+    }
+
     public function add()
     {
         $this->load->myView('edit_mode');

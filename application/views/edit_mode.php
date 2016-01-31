@@ -1,4 +1,6 @@
 <script src="<?php echo base_url();?>application/views/scripts/map_manager.js" ></script>
+
+<input type="hidden" id="uglyurlpatch" value="<?php echo site_url('edit_view/save');?>">
 <div class="row">
     <div id="map-wrapper" class="col s12" style="position:relative;">
 
