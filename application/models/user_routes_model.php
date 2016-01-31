@@ -14,8 +14,7 @@ class user_routes_model extends CI_Model
             ->select('rm.id, rm.route_id, rm.marker_lat, rm.marker_long')
             ->select('r.name, r.description')
             ->from('routes r')
-            ->join('routes_markers rm', 'r.id = rm.id')
-            ->limit(1);
+            ->join('routes_markers rm', 'r.id = rm.route_id');
         return $this->db->get()->result();
     }
 
@@ -33,8 +32,8 @@ class user_routes_model extends CI_Model
     public function get_routes()
     {
         $this->db
-            ->select('routes.id, routes.name, routes.description')
-            ->from('routes');
+            ->select('r.id, r.name, r.description')
+            ->from('routes r');
         return $this->db->get()->result();
     }
 
@@ -59,8 +58,8 @@ class user_routes_model extends CI_Model
             $this->db->where('route_marker_descriptions.route_id', $route_id);
             $this->db->delete('route_marker_descriptions');
 
-            $this->db->where('routes.id', $route_id);
-            $this->db->delete('routes');
+            $this->db->where('r.id', $route_id);
+            $this->db->delete('routes r');
         }
     }
 

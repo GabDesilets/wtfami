@@ -1,3 +1,10 @@
+<?php
+if (count($route) > 0) {
+	echo '<script>var loadedRoute = ' . json_encode($route) . ';</script>';
+} else {
+	echo '<script>var loadedRoute = [];</script>';
+}
+?>
 <script src="<?php echo base_url();?>application/views/scripts/map_manager.js" ></script>
 <div class="row">
     <div id="map-wrapper" class="col s12" style="position:relative;">
