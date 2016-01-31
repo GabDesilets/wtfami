@@ -1,19 +1,9 @@
 <div class="container">
-<h2>
-    Recherchez une route.
-</h2>
-<nav>
-    <div class="nav-wrapper">
-        <form method="GET" action="<?php echo site_url('route/index')?>">
-            <div class="input-field">
-                <input id="search" name="search_string" type="search">
-                <label for="search"><i class="material-icons">search</i></label>
-                <!-- I've put "red-text" class to emphasize -->
-                <i class="material-icons red-text">close</i>
-        </form>
+<div class="row" >
+    <div class="col s12">
+        <h5><?php echo isset($search) && $search != "" ? "R&eacute;sultats de recherche pour \"{$search}\"": ''?></h5>
     </div>
-</nav>
-<?php echo isset($search) ? "Votre derniere recherche: {$search}": ''?>
+</div>
 <?php if($routes):?>
 <div class="row" >
     <table class="highlight responsive-table">
@@ -43,14 +33,20 @@
                     <a
                         href="https://www.facebook.com/sharer/sharer.php?u=
                         <?php echo urlencode('http://ogegcwavif.localtunnel.me/edit_mode/readonly/'.$route->user_id.'/'.$route->id);?>&t=BITCH IM BACK"
-                       onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-                       target="_blank" title="Share on Facebook">share
+                       onclick="javascript:window.open(this.href,  sur '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+                       target="_blank" title="Share on Facebook">Partager sur <i class="fa fa-facebook" style="font-size: 18px;"></i>acebook
                     </a>
                 </td>
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
+<?php else: ?>
+<div class="row" >
+    <div class="col s12">
+        <h5>Aucun r&eacute;sultat</h5>
+    </div>
+</div>
 <?php endif; ?>
 </div>
 </div>

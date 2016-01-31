@@ -5,6 +5,7 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -36,7 +37,16 @@
 <nav>
     <div class="nav-wrapper">
         <a href="<?php echo base_url();?>" class="brand-logo" style="padding-left: 20px;">WTFAMI</a>
+        
         <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li>
+              <div class="input-field" style="width:500px;margin-right:375px;">
+                <form name="frmQuickSearch" action="<?php echo site_url('route/index')?>" method="GET">
+                  <input id="search" name="search_string" type="search" placeholder="Recherchez une route...">
+                  <label for="search"><i class="material-icons">search</i></label>
+                </form>
+              </div>
+            </li>
             <li><a href="<?php echo base_url();?>">Accueil</a></li>
             <li><a href="<?php echo base_url();?>about">&Agrave; propos</a></li>
         </ul>
