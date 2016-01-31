@@ -6,9 +6,9 @@
     <div class="container">
         <div class="row">
             <div class="col l6 s12">
-                <h5 class="white-text">WTFAMI</h5>
+                <h5 class="white-text">ROUTR</h5>
                 <p class="grey-text text-lighten-4">
-                    D&eacute;couvre ta r&eacute;gion gr&acirc;ce &agrave; WTFAMI.<br/>
+                    D&eacute;couvre ta r&eacute;gion gr&acirc;ce &agrave; ROUTR.<br/>
                     Conserve une trace des chemins et des endroits qui t'ont marqu&eacute;.<br/>
                     Partage tes d&eacute;couvertes avec tout le monde.
                 </p>
@@ -20,7 +20,7 @@
     </div>
     <div class="footer-copyright">
         <div class="container">
-            &copy; 2016 WTFAMI inc.
+            &copy; 2016 ROUTR inc.
         </div>
     </div>
 </footer>

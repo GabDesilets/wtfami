@@ -25,7 +25,7 @@
        }
     </style>
 
-    <title>Where the Fuck Am I?!</title>
+    <title>ROUTR</title>
 </head>
 <body>
 <!--Import jQuery before materialize.js-->
@@ -36,7 +36,7 @@
 
 <nav>
     <div class="nav-wrapper">
-        <a href="<?php echo base_url();?>" class="brand-logo" style="padding-left: 20px;">WTFAMI</a>
+        <a href="<?php echo base_url();?>" class="brand-logo" style="padding-left: 20px;">ROUTR</a>
         
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li>
