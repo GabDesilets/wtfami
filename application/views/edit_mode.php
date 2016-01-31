@@ -7,7 +7,7 @@ if (count($route) > 0) {
 ?>
 <script src="<?php echo base_url();?>application/views/scripts/map_manager.js" ></script>
 
-<input type="hidden" id="uglyurlpatch" value="<?php echo site_url('edit_view/save');?>">
+<input type="hidden" id="uglyurlpatch" value="<?php echo site_url('edit_mode/save');?>">
 <div class="row">
     <div id="map-wrapper" class="col s12" style="position:relative;">
 

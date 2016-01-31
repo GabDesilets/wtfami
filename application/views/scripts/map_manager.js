@@ -122,8 +122,8 @@ function completeWTFAMI() {
   for(var i = 0; i < pointsOfInterest.length; i++) {
     pois.push(
         {
-            name: 'TODO',
-            description: 'TODO',
+            name: pointsOfInterest[i].name,
+            description: pointsOfInterest[i].desc,
             lat: pointsOfInterest[i].marker.position.lat(),
             long: pointsOfInterest[i].marker.position.lng()
         }
@@ -137,7 +137,7 @@ function completeWTFAMI() {
 
   $.ajax({
     type:    'POST',
-    url:     "",
+    url:     $('#uglyurlpatch').val(),
     data:    routes,
     dataType:'JSON',
     success: function(data) {

@@ -34,6 +34,7 @@
 		<div class="col s8">
 			<div class="row">
 				<h3 class="bold">Discover your region</h3>
+				<p><a class="waves-effect waves-light btn" href="<?php echo site_url('route/index')?>"><i class="material-icons left">search</i>Chercher une route !</a></p>
 			</div>
 		</div>
 		<div class="col s4">
