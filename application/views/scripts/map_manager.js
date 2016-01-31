@@ -36,6 +36,9 @@ function initMap() {
   } else {
     handleNoGeolocation(false);
   }
+
+  if (road.length > 0) resetRoad();
+  if (pointsOfInterest.length > 0) resetPointsOfInterest();
 }
 
 // Handles click events on a map, and adds a new point to the Polyline.
@@ -66,17 +69,35 @@ function onMapClick(event) {
 }
 
 function addMarker() {
-  var markerName = $('#marker-name').value;
-  var markerDescription = $('#marker-desc').value;
+  var markerName = $('#marker-name')[0].value;
+  var markerDescription = $('#marker-desc')[0].value;
+  $('#marker-name')[0].value = '';
+  $('#marker-desc')[0].value = '';
 
   // Add a new marker at the new plotted point on the polyline.
-   var marker = new google.maps.Marker({
-       position: lastClickPosition,
-       title: markerName,
-       map: map
-   });
+  var marker = new google.maps.Marker({
+    position: lastClickPosition,
+    title: markerName,
+    map: map,
+    draggable: true,
+    markerName: markerName
+  });
 
-   pointsOfInterest.push({'marker': marker, 'name': markerName, 'desc': markerDescription});
+  pointsOfInterest.push({'marker': marker, 'name': markerName, 'desc': markerDescription});
+
+  marker.addListener('click', function() {
+    var nbPointsOfInterest = pointsOfInterest.length;
+    for (var i = 0; i < nbPointsOfInterest; i++) {
+      if (pointsOfInterest[i].marker.position == marker.position) {
+        break;
+      }
+    }
+    var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + (i + 1) + '</h6>Name: ' + marker.markerName + '<br>Location : ' + marker.position + '</div>';
+    var infowindow = new google.maps.InfoWindow({
+       content: contentString
+    });
+    infowindow.open(map, marker);
+  });
 }
 
 function completeRoad() {
@@ -123,6 +144,45 @@ function completeWTFAMI() {
         console.log("succeess");
     }
   });
+}
+
+function loadRoad() {
+  var path = poly.getPath();
+  nbRoadPoints = road.length;
+  for (var i = 0; i < nbRoadPoints; i++) {
+     // Because path is an MVCArray, we can simply append a new coordinate and it will automatically appear.
+    path.push(road[i]);
+  }
+}
+
+function loadPointsOfInterest() {
+  nbPointsOfInterest = pointsOfInterest.length;
+  for (var i = 0; i < nbPointsOfInterest; i++) {
+    // Add a new marker at the new plotted point on the polyline.
+    var marker = new google.maps.Marker({
+      position: lastClickPosition,
+      title: markerName,
+      map: map,
+      draggable: true,
+      markerName: markerName
+    });
+
+    pointsOfInterest.push({'marker': marker, 'name': markerName, 'desc': markerDescription});
+
+    marker.addListener('click', function() {
+      var nbPointsOfInterest = pointsOfInterest.length;
+      for (var i = 0; i < nbPointsOfInterest; i++) {
+        if (pointsOfInterest[i].marker.position == marker.position) {
+          break;
+        }
+      }
+      var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + (i + 1) + '</h6>Name: ' + marker.markerName + '<br>Location : ' + marker.position + '</div>';
+      var infowindow = new google.maps.InfoWindow({
+         content: contentString
+      });
+      infowindow.open(map, marker);
+    });
+  }
 }
 
 function handleNoGeolocation(errorFlag) {

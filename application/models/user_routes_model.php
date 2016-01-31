@@ -58,8 +58,8 @@ class user_routes_model extends CI_Model
             $this->db->where('route_marker_descriptions.route_id', $route_id);
             $this->db->delete('route_marker_descriptions');
 
-            $this->db->where('routes.id', $route_id);
-            $this->db->delete('routes');
+            $this->db->where('r.id', $route_id);
+            $this->db->delete('routes r');
         }
     }
 
