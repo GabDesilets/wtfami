@@ -13,6 +13,8 @@ class user_routes_model extends CI_Model
         $this->db
             ->select('rm.id, rm.route_id, rm.marker_lat, rm.marker_long')
             ->select('r.name, r.description')
+            ->from('routes r')
+            ->join('routes_markers rm', 'r.id = rm.id')
             ->limit(1);
         return $this->db->get()->result();
     }
@@ -28,7 +30,7 @@ class user_routes_model extends CI_Model
     public function where_user($user_id)
     {
         $this->db
-            ->join('users_routes', 'routes.id = users_routes.route_id')
+            ->join('users_routes', 'r.id = users_routes.route_id')
             ->where('users_routes.user_id', $user_id);
         return $this;
     }
