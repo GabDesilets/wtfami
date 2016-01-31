@@ -1,10 +1,20 @@
-<?php
-if (isset($route) && count($route) > 0) {
-	echo '<script>var loadedRoute = ' . json_encode($route) . ';var routeName = loadedRoute.name;var routeDescription = loadedRoute.description;</script>';
-} else {
-	echo '<script>var loadedRoute = [];var routeName = "";var routeDescription = "";</script>';
-}
-?>
+
+<?php if(isset($usr_route)):?>
+    <script>
+        var loadedRoute = <?php echo json_encode($usr_route) ?>;
+        var routeName = loadedRoute.name;
+        var routeDescription = loadedRoute.description;
+        var descriptionMarkers = <?php  echo json_encode($desc_markers);?>;
+    </script>
+<?php else: ?>
+    <script>
+        var loadedRoute = [];
+        var routeName = "";
+        var routeDescription = "";
+        var descriptionMarkers = [];
+    </script>
+<?php endif; ?>
+
 <script async defer
        src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBu9AE8MvT526Yv37X05wdlT6qAdCXrnUQ&signed_in=true&callback=initView"></script>
 <script src="<?php echo base_url();?>application/views/scripts/map_manager.js" ></script>

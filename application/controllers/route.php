@@ -16,6 +16,9 @@ class route extends CI_Controller
 
     public function index()
     {
-        echo 'herro';
+        $search_string = $this->input->get('search_string');
+        $search_routes = $this->user_routes_model->with_search($search_string)->get_routes();
+
+        $this->load->myView('routes_search', ['routes' => $search_routes, 'search' => $search_string]);
     }
 }

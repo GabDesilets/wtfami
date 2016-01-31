@@ -21,12 +21,27 @@ class user_routes_model extends CI_Model
     public function get_routes_markers_description($route_id)
     {
         $this->db
-            ->select('rmd.id, rmd.route_id, rmd.marker_lat, rmd.marker_long')
+            ->select('rmd.id, rmd.route_id, rmd.marker_lat, rmd.marker_long, rmd.name, rmd.description')
             ->from('routes r')
             ->join('route_marker_descriptions rmd', 'r.id = rmd.route_id')
             ->where('rmd.route_id', $route_id);
-        return $this->db->get->result();
+        return $this->db->get()->result();
 
+    }
+
+    public function with_search($search_string = '')
+    {
+        $this->db
+            ->join('users_routes', 'r.id = users_routes.route_id')
+            ->join('users', 'r.id = users_routes.route_id')
+            ->like('users.fname', $search_string)
+            ->or_like('users.lname', $search_string)
+            ->or_like('users.email', $search_string)
+            ->or_like('r.name', $search_string)
+            ->or_like('r.description', $search_string);
+        $this->db->select("CONCAT_WS(' ', users.fname, users.lname) as author", false);
+        $this->db->select('users.id user_id');
+        return $this;
     }
 
     public function get_routes()
