@@ -41,6 +41,7 @@
 $route['default_controller'] = "welcome";
 $route['view_mode'] = "view_mode/index";
 $route['edit_mode'] = "edit_mode/index";
+$route['about'] = "about/index";
 $route['404_override'] = '';
 
 

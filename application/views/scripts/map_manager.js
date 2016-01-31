@@ -51,12 +51,12 @@ function onMapClick(event) {
     road.push(currentMarker);
 
     switch (road.length) {
-      case 1: $('#titleDiv h5')[0].innerHTML = "OK, where are we going next?"; break;
+      case 1: $('#titleDiv h5')[0].innerHTML = "Choisi un autre point pour tracer la route!"; break;
       case 2:
-        $('#titleDiv h5')[0].innerHTML = "Nice! Now, add as many waypoints as you'd like until you're done!";
+        $('#titleDiv h5')[0].innerHTML = "Good job! Ajoute autant de points que tu le veux et dit moi quand tu auras terminé!";
         $('#titleDiv')[0].innerHTML =
           $('#titleDiv h5').prop('outerHTML') +
-          "<br/><br/><a id='roadDoneButton' class='waves-effect waves-light btn' onclick='completeRoad()'>I'm done!</a>";
+          "<br/><br/><a id='roadDoneButton' class='waves-effect waves-light btn' onclick='completeRoad()'>Ma route est prête!</a>";
         break;
     }
   } else {
@@ -66,7 +66,6 @@ function onMapClick(event) {
 }
 
 function addMarker() {
-
   var markerName = $('#marker-name').value;
   var markerDescription = $('#marker-desc').value;
 
@@ -81,8 +80,8 @@ function addMarker() {
 }
 
 function completeRoad() {
-  $('#titleDiv h5')[0].innerHTML = "Your road is now ready. You can now add some POIs if you wish, or just leave it at that!";
-  $('#roadDoneButton')[0].innerHTML = "Save";
+  $('#titleDiv h5')[0].innerHTML = "Maintenant que ta route est prête, tu peux ajouter autant de points d'intérêt que tu le veux, ou simplement en rester là.";
+  $('#roadDoneButton')[0].innerHTML = "Enregistrer";
   $("#roadDoneButton").attr("onclick","completeWTFAMI()");
   roadIsComplete = true;
 }
