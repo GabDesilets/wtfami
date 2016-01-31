@@ -68,4 +68,49 @@ class user_routes_model extends CI_Model
         $this->db->where('users_routes.route_id', $route_id);
         return $this;
     }
+
+    public function save_new_routes($routes, $uid)
+    {
+        $this->db->insert(
+            'routes',
+            [
+                'name' => 'todo',
+                'description' => 'todo'
+            ]
+        );
+        $rid = $this->db->insert_id();
+
+        $this->db->insert(
+            'users_routes',
+            [
+                'user_id' => $uid,
+                'route_id' => $rid
+            ]
+        );
+
+        foreach ($routes['routes_markers'] as $rm) {
+            $rm['route_id'] = $rid;
+            $this->db->insert(
+                'routes_markers',
+                [
+                    'route_id' => $rid,
+                    'marker_lat' => (float)$rm['lat'],
+                    'marker_long' => (float)$rm['long']
+                ]
+            );
+        }
+
+        foreach ($routes['route_markers_descriptions'] as $rmd) {
+            $this->db->insert(
+                'route_marker_descriptions',
+                [
+                    'route_id' => $rid,
+                    'name' => $rmd['name'],
+                    'description' => $rmd['description'],
+                    'marker_lat' => (float)$rmd['lat'],
+                    'marker_long' => (float)$rmd['long']
+                ]
+            );
+        }
+    }
 }

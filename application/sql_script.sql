@@ -47,7 +47,7 @@ insert into users_routes
 ######################################################################
 
 create table if NOT EXISTS routes_markers(
-  id int(11) not null,
+  id int(11) not null AUTO_INCREMENT,
   route_id int(11) not null,
   marker_lat FLOAT(10, 6),
   marker_long FLOAT(10, 6),
@@ -62,14 +62,14 @@ INSERT into routes_markers(route_id, marker_lat, marker_long)
 #####################################################################
 
 create TABLE if NOT EXISTS route_marker_descriptions(
-  id int(11) not null,
+  id int(11) not null AUTO_INCREMENT,
   route_id int(11) not null,
   marker_lat FLOAT(10, 6),
   marker_long FLOAT(10, 6),
   name VARCHAR(255) not null,
   description TEXT default '',
   PRIMARY KEY (id)
-);
+)DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 ALTER TABLE route_marker_descriptions
 ADD CONSTRAINT `fk_route_marker_descriptionsroutes_route_id` FOREIGN KEY (route_id) REFERENCES routes (id);

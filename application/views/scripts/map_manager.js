@@ -151,7 +151,42 @@ function completeRoad() {
 }
 
 function completeWTFAMI() {
-  alert('Nothing to do here!');
+  console.log(road[0], pointsOfInterest);
+  var road_markers = [];
+  var pois = [];
+  for(var i = 0; i < road.length; i++) {
+    road_markers.push(
+        {
+          lat: road[i].lat(),
+          long: road[i].lng()
+        }
+    );
+  }
+  for(var i = 0; i < pointsOfInterest.length; i++) {
+    pois.push(
+        {
+            name: pointsOfInterest[i].name,
+            description: pointsOfInterest[i].desc,
+            lat: pointsOfInterest[i].marker.position.lat(),
+            long: pointsOfInterest[i].marker.position.lng()
+        }
+    );
+
+  }
+  var routes = {
+    'routes_markers': road_markers,
+    'route_markers_descriptions': pois
+  };
+
+  $.ajax({
+    type:    'POST',
+    url:     $('#uglyurlpatch').val(),
+    data:    routes,
+    dataType:'JSON',
+    success: function(data) {
+        console.log("succeess");
+    }
+  });
 }
 
 function compileRoad() {

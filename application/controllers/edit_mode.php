@@ -25,8 +25,13 @@ class Edit_Mode extends CI_Controller {
             ->where_user($this->session->userdata('uid'))
             ->where_route($route_id)
             ->get_one_route();
-        //die(var_dump($user_route));    
         $this->load->myView('edit_mode', ['route' => $user_route]);
+    }
+
+    public function save()
+    {
+        $s = $this->user_routes_model->save_new_routes($this->input->post(),$this->session->userdata('uid'));
+        die(var_dump($s));
     }
 
     public function add()

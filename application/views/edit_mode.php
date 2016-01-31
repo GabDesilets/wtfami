@@ -8,7 +8,9 @@ if (isset($route) && count($route) > 0) {
 <script async defer
        src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBu9AE8MvT526Yv37X05wdlT6qAdCXrnUQ&signed_in=true&callback=initView"></script>
 <script src="<?php echo base_url();?>application/views/scripts/map_manager.js" ></script>
-<div class="row" >
+
+<input type="hidden" id="uglyurlpatch" value="<?php echo site_url('edit_mode/save');?>">
+<div class="row">
     <div id="map-wrapper" class="col s12" style="position:relative;">
 		<div id="floating-panel">
 		   <!--<input onclick="clearMarkers();" type=button value="Hide Markers">
