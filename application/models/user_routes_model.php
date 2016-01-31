@@ -19,6 +19,17 @@ class user_routes_model extends CI_Model
         return $this->db->get()->result();
     }
 
+    public function get_routes_markers_description($route_id)
+    {
+        $this->db
+            ->select('rmd.id, rmd.route_id, rmd.marker_lat, rmd.marker_long')
+            ->from('routes r')
+            ->join('route_marker_descriptions rmd', 'r.id = rmd.route_id')
+            ->where('rmd.route_id', $route_id);
+        return $this->db->get->result();
+
+    }
+
     public function get_routes()
     {
         $this->db
