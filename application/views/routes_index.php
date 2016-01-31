@@ -1,9 +1,15 @@
 <div class="container">
     <div id="tables" class="section scrollspy">
-        <h2 class="header">Vos routes</h2>
-        <a class="waves-effect waves-light btn" href="<?php echo site_url('edit_mode/add')?>">
-            <i class="material-icons left">add_circle_outline</i>Ajouter
-        </a>
+        <div class="row" >
+            <div class="col s4">
+                <h2 class="header">Vos routes</h2>
+            </div>
+            <div class="col s8">
+                <a class="waves-effect waves-light btn" href="<?php echo site_url('edit_mode/add')?>">
+                    <i class="material-icons left">add_circle_outline</i>Ajouter
+                </a>
+            </div>            
+        </div>
         <div class="row" >
             <table class="highlight responsive-table">
                 <thead>

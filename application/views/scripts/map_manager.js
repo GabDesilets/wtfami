@@ -63,7 +63,9 @@ function initMap() {
 
 function updateRouteInfo() {
   routeName = $("#route-name").val();
+  $('#route-name-disp')[0].innerHTML = routeName;
   routeDescription = $("#route-desc").val();
+  $('#route-desc-disp')[0].innerHTML = routeDescription;
   initMap();
 }
 
@@ -108,23 +110,18 @@ function addMarker() {
     title: markerName,
     map: map,
     draggable: true,
-    markerName: markerName
+    markerRefNum: pointsOfInterest.length + 1,
+    markerName: markerName,
   });
 
   pointsOfInterest.push({'marker': marker, 'name': markerName, 'description': markerDescription});
 
   marker.addListener('click', function() {
-    var nbPointsOfInterest = pointsOfInterest.length;
-    for (var i = 0; i < nbPointsOfInterest; i++) {
-      if (pointsOfInterest[i].marker.position == marker.position) {
-        break;
-      }
-    }
-    var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + (i + 1) + '</h6><a onclick="deleteMarker(' + marker.position.lat() + ', ' + marker.position.lng() + ')"><i class="small material-icons" style="position: absolute;top: 1px;right: 15px;font-size: 13px;">delete</i></a>Name: ' + marker.markerName + '<br>Location : (' + marker.position.lat().toFixed(4) + ', ' + marker.position.lng().toFixed(4) + ')</div>';
+    var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + this.markerRefNum + '</h6><a onclick="deleteMarker(' + this.position.lat() + ', ' + this.position.lng() + ')"><i class="small material-icons" style="position: absolute;top: 1px;right: 15px;font-size: 13px;">delete</i></a>Name: ' + this.markerName + '<br>Location : (' + this.position.lat().toFixed(4) + ', ' + this.position.lng().toFixed(4) + ')</div>';
     var infowindow = new google.maps.InfoWindow({
        content: contentString
     });
-    infowindow.open(map, marker);
+    infowindow.open(map, this);
   });
 }
 
@@ -154,7 +151,6 @@ function completeRoad() {
 }
 
 function completeWTFAMI() {
-  console.log(routeName, routeDescription);
   var road_markers = [];
   var pois = [];
   for(var i = 0; i < road.length; i++) {
@@ -209,21 +205,7 @@ function compileRoad() {
 function compilePointsOfInterest() {
   //setMapOnAll(null);
   nbPointsOfInterest = pointsOfInterest.length;
-  if (pointsOfInterest.length > 0) {
-    for (var i = 0; i < nbPointsOfInterest; i++) {
-      // Add a new marker at the new plotted point on the polyline.
-      var marker = new google.maps.Marker({
-        position: pointsOfInterest[i].marker,
-        title: pointsOfInterest[i].name,
-        map: map,
-        draggable: true,
-        markerName: pointsOfInterest[i].name,
-        map: map,
-      });
-
-      pointsOfInterest[i].marker = marker;
-    }
-  } else if (descriptionMarkers.length > 0) {
+  if (descriptionMarkers.length > 0) {
     nbDescriptionMarkers = descriptionMarkers.length;
     for (var i = 0; i < nbDescriptionMarkers; i++) {
       // Add a new marker at the new plotted point on the polyline.
@@ -232,27 +214,22 @@ function compilePointsOfInterest() {
         title: descriptionMarkers[i].name,
         map: map,
         draggable: true,
+        markerRefNum: (i + 1),
         markerName: descriptionMarkers[i].name,
         map: map,
       });
 
       pointsOfInterest.push({'marker': marker, 'name': descriptionMarkers[i].name, 'description': descriptionMarkers[i].description});
+    
+      marker.addListener('click', function() {
+        var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + this.markerRefNum + '</h6><a onclick="deleteMarker(' + this.position.lat() + ', ' + this.position.lng() + ')"><i class="small material-icons" style="position: absolute;top: 1px;right: 15px;font-size: 13px;">delete</i></a>Name: ' + this.markerName + '<br>Location : (' + this.position.lat().toFixed(4) + ', ' + this.position.lng().toFixed(4) + ')</div>';
+        var infowindow = new google.maps.InfoWindow({
+           content: contentString
+        });
+        infowindow.open(map, this);
+      });
     }
   }
-
-  marker.addListener('click', function() {
-    var nbPointsOfInterest = pointsOfInterest.length;
-    for (var i = 0; i < nbPointsOfInterest; i++) {
-      if (pointsOfInterest[i].marker.position == marker.position) {
-        break;
-      }
-    }
-    var contentString ='<div id="content"><h6>Point d\'int&eacute;r&ecirc;t #' + (i + 1) + '</h6><a onclick="deleteMarker(' + marker.position.lat() + ', ' + marker.position.lng() + ')"><i class="small material-icons" style="position: absolute;top: 1px;right: 15px;font-size: 13px;">delete</i></a>Name: ' + marker.markerName + '<br>Location : (' + marker.position.lat().toFixed(4) + ', ' + marker.position.lng().toFixed(4) + ')</div>';
-    var infowindow = new google.maps.InfoWindow({
-       content: contentString
-    });
-    infowindow.open(map, marker);
-  });
 }
 
 function handleNoGeolocation(errorFlag) {
@@ -271,3 +248,5 @@ function handleNoGeolocation(errorFlag) {
   var infowindow = new google.maps.InfoWindow(options);
   map.setCenter(options.position);
 }
+
+
