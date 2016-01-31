@@ -28,12 +28,11 @@ class Edit_Mode extends CI_Controller {
 
         $description_markers = $this->user_routes_model->get_routes_markers_description($route_id);
 
-        $this->load->myView('edit_mode', ['usr_route' => $user_route, 'desc_markers' => $description_markers]);
+        $this->load->myView('edit_mode', ['usr_route' => $user_route, 'desc_markers' => $description_markers, 'route_id' => $route_id]);
     }
 
     public function readonly($user_id = null, $route_id = null)
     {
-
         $route_id = $this->input->post('id') ? $this->input->post('id') : $route_id;
         $user_id = $this->input->post('user_id') ? $this->input->post('user_id') : $user_id;
         $user_route = $this->user_routes_model
@@ -48,7 +47,12 @@ class Edit_Mode extends CI_Controller {
 
     public function save()
     {
-        $this->user_routes_model->save_new_routes($this->input->post(),$this->session->userdata('uid'));
+        $route_id = $this->input->post('route_id');
+        if ($route_id) {
+            $this->user_routes_model->update_routes($this->input->post(), $route_id);
+        } else {
+            $this->user_routes_model->save_new_routes($this->input->post(), $this->session->userdata('uid'));
+        }
     }
 
     public function add()

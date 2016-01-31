@@ -20,6 +20,7 @@
 <script src="<?php echo base_url();?>application/views/scripts/map_manager.js" ></script>
 
 <input type="hidden" id="uglyurlpatch" value="<?php echo site_url('edit_mode/save');?>">
+<input type="hidden" id="route_id" value="<?php echo $route_id?>">
 <div class="row">
     <div id="map-wrapper" class="col s12" style="position:relative;">
 		<div id="floating-panel">

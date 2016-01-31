@@ -78,6 +78,41 @@ class user_routes_model extends CI_Model
         }
     }
 
+    public function update_routes($routes, $route_id)
+    {
+
+            $this->db->where('routes_markers.route_id', $route_id);
+            $this->db->delete('routes_markers');
+
+            $this->db->where('route_marker_descriptions.route_id', $route_id);
+            $this->db->delete('route_marker_descriptions');
+
+        foreach ($routes['routes_markers'] as $rm) {
+            $this->db->insert(
+                'routes_markers',
+                [
+                    'route_id' => $route_id,
+                    'marker_lat' => (float)$rm['lat'],
+                    'marker_long' => (float)$rm['long']
+                ]
+            );
+        }
+
+        foreach ($routes['route_markers_descriptions'] as $rmd) {
+            $this->db->insert(
+                'route_marker_descriptions',
+                [
+                    'route_id' => $route_id,
+                    'name' => $rmd['name'],
+                    'description' => $rmd['description'],
+                    'marker_lat' => (float)$rmd['lat'],
+                    'marker_long' => (float)$rmd['long']
+                ]
+            );
+        }
+
+    }
+
     public function where_route($route_id)
     {
         $this->db->where('users_routes.route_id', $route_id);

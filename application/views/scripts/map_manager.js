@@ -175,7 +175,8 @@ function completeWTFAMI() {
   }
   var routes = {
     'routes_markers': road_markers,
-    'route_markers_descriptions': pois
+    'route_markers_descriptions': pois,
+    'route_id': $('#route_id').val()
   };
 
   $.ajax({
