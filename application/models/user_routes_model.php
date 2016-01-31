@@ -115,7 +115,7 @@ class user_routes_model extends CI_Model
 
     public function where_route($route_id)
     {
-        $this->db->where('users_routes.route_id', $route_id);
+        $this->db->where('r.id', $route_id);
         return $this;
     }
 
@@ -124,8 +124,8 @@ class user_routes_model extends CI_Model
         $this->db->insert(
             'routes',
             [
-                'name' => 'todo',
-                'description' => 'todo'
+                'name' => $routes['route_name'],
+                'description' => $routes['route_description']
             ]
         );
         $rid = $this->db->insert_id();
@@ -162,5 +162,7 @@ class user_routes_model extends CI_Model
                 ]
             );
         }
+
+        return $rid;
     }
 }
